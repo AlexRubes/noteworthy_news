@@ -29,6 +29,39 @@ mongoose.connect(MONGODB_URI);
 
 //----------------ROUTES-----------------
 // A GET route for scraping the website
+app.get("/scrape", function (req, res) {
+    //get body of html
+    axios.get("").then(function (response) {
+        // load body of html to cheerio and save it to $ for a shorthand selector
+        var $ = cheerio.load(response.data);
+        //grab specific information by tag
+        $("").each(function (i, element) {
+            var result = {};
+
+            // Add the text and href of every link, and save them as properties of the result object
+            result.title = $(this)
+                .children("a")
+                .text();
+            result.summary = $(this)
+                .
+                .
+            result.link = $(this)
+                .children("a")
+                .attr("href");
+
+                //create article user result object
+                db.Article.create(result)
+                .then(function(dbArticle) {
+                    res.json(dbArticle);
+                })
+                .catch(function(err) {
+                    res.json(err);
+                });
+
+        });
+        console.log("scrape complete");
+    });
+});
 
 //start the server
 app.listen(PORT, function () {
