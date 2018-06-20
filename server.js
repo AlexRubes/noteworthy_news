@@ -1,3 +1,5 @@
+import { appendFile } from "fs";
+
 //require npm packages
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -88,6 +90,36 @@ app.get("/scrape", function(req, res) {
       });
   });
   
+  app.post("/save", function(req, res) {
+
+    console.log("This is the title: " + req.body.title);
+  
+    var newArticleObject = {};
+  
+    newArticleObject.title = req.body.title;
+  
+    newArticleObject.link = req.body.link;
+  
+    var entry = new Article(newArticleObject);
+  
+    console.log("We can save the article: " + entry);
+  
+    // Now, save that entry to the db
+    entry.save(function(err, doc) {
+      // Log any errors
+      if (err) {
+        console.log(err);
+      }
+      // Or log the doc
+      else {
+        console.log(doc);
+      }
+    });
+  
+    res.redirect("/savedarticles");
+  
+  });
+
   // Route for grabbing a specific Article by id, populate it with it's note
   app.get("/articles/:id", function(req, res) {
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...

@@ -14,7 +14,22 @@
             </li>
         </ul>
     </div>
-    <div class="articles" id="articles-js">
+    <div class="picture">
 
+    </div>
+    <div class="articles" id="articles-js">
+        {{#each articles}}
+        <div class="titles">
+            {{this.title}}
+        </div>
+        <form action="/save" method="POST">
+            <input id="article-title" type="hidden" name="title" value="{{this.title}}">
+            <input id="article-link" type="hidden" name="link" value={{this.link}}>
+            <button type="submit" class="btn btn-default pull-right">SAVE ARTICLE</button>
+        </form>
+        <div class="links">
+            {{this.link}}
+        </div>
+        {{/each}}
     </div>
 </div>
