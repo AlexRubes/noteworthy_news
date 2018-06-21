@@ -1,5 +1,3 @@
-import { appendFile } from "fs";
-
 //require npm packages
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -46,24 +44,29 @@ app.get("/scrape", function(req, res) {
       $("article h2").each(function(i, element) {
         // Save an empty result object
         var result = {};
+        
   
         // Add the text and href of every link, and save them as properties of the result object
+      
         result.title = $(this)
           .children("a")
           .text();
         result.link = $(this)
           .children("a")
           .attr("href");
+       
   
         // Create a new Article using the `result` object built from scraping
         db.Article.create(result)
           .then(function(dbArticle) {
             // View the added result in the console
             console.log(dbArticle);
+            console.log(result);
           })
           .catch(function(err) {
             // If an error occurred, send it to the client
             return res.json(err);
+           
           });
       });
   
@@ -73,7 +76,19 @@ app.get("/scrape", function(req, res) {
   });
   
   app.get("/", function(req, res) {
-    res.render("index");
+    db.Article.find({})
+      .then(function(dbArticle) {
+        var hbsObject = {
+          articles: dbArticle
+        };
+        // If we were able to successfully find Articles, send them back to the client
+        res.render("index", hbsObject);
+      })
+      .catch(function(err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+      });
+
   });
 
   // Route for getting all Articles from the db
@@ -83,6 +98,7 @@ app.get("/scrape", function(req, res) {
       .then(function(dbArticle) {
         // If we were able to successfully find Articles, send them back to the client
         res.json(dbArticle);
+        console.log(dbArticle);
       })
       .catch(function(err) {
         // If an error occurred, send it to the client
