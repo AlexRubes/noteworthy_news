@@ -2,10 +2,10 @@
     <div id="navbar-js">
         <ul>
             <li>
-                <a href="/articles">Home</a>
+                <a href="/">Home</a>
             </li>
             <li>
-                <a href="/savedarticles">Saved Articles</a>
+                <a href="/saved">Saved Articles</a>
             </li>
             <li>
                 <form action="/scrape" method="POST" class="navbar-form navbar-left">
@@ -15,21 +15,30 @@
         </ul>
     </div>
     <div class="jumbotron">
-
+        <h1 class="header">NOTEworthy News</h1>
     </div>
-    <div class="row" id="articles-js">
-        {{#each articles}}
-        <div class="row titles">
-            {{this.title}}
+    <div class="card-group" id="articles-js">
+        <div class="card">
+            <div class="card-body">
+                {{#each articles}}
+                <h3 class="card-title">
+                    {{this.title}}
+                </h3>
+                <div class="card-text">
+                    {{this.link}}
+                </div>
+                <form action="/saved/{{this.id}}" method="POST">
+                    <input id="article-title" type="hidden" name="title" value="{{this.title}}">
+                    <input id="article-link" type="hidden" name="link" value={{this.link}}>
+                    <button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
+                    {{#unless this.note}}
+                    <button type="button" class="addnote-button" value="{{this._id}}">Add A Note</button>
+                    {{/unless}} {{#if this.note}}
+                    <button type="button" class="addnote-button" value="{{this._id}}">Edit Note</button>
+                    {{/if}}
+                </form>
+                {{/each}}
+            </div>
         </div>
-        <div class=" row links">
-            {{this.link}}
-        </div>
-        <form action="/save" method="POST">
-            <input id="article-title" type="hidden" name="title" value="{{this.title}}">
-            <input id="article-link" type="hidden" name="link" value={{this.link}}>
-            <button type="submit" class="btn btn-default pull-right">SAVE ARTICLE</button>
-        </form>
-        {{/each}}
     </div>
 </div>
