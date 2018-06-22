@@ -45,16 +45,13 @@ app.get("/scrape", function (req, res) {
       // Save an empty result object
       var result = {};
 
-
       // Add the text and href of every link, and save them as properties of the result object
-
       result.title = $(this)
         .children("a")
         .text();
       result.link = $(this)
         .children("a")
         .attr("href");
-
 
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
@@ -76,6 +73,7 @@ app.get("/scrape", function (req, res) {
   });
 });
 
+//route for home page to get all articles in db
 app.get("/", function (req, res) {
   db.Article.find({})
     .then(function (dbArticle) {
@@ -92,56 +90,75 @@ app.get("/", function (req, res) {
 
 });
 
-// Route for getting all saved Articles from the db
+// Route for getting all saved articles from the db
 app.get("/saved", function (req, res) {
-  db.Article.find({issaved: true}, null, function (err, data) {
-      res.render("saved", {saved:data});
-  });
+  db.Article.find({issaved: true})
+    .then(function(saved) {
+      var hbsObjectTwo = {
+        saved: saved
+      };
+      // If we were able to successfully find Articles, send them back to the client
+      res.render("saved", hbsObjectTwo);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
 });
 
-//Route to get article by id
-app.get("/:id", function(req, res) {
-	db.Article.findById(req.params.id, function(err, data) {
-		res.json(data);
-	});
-});
+// // Route for grabbing a specific Article by id, populate it with it's note
+// app.get("/saved/:id", function(req, res) {
+//   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+//   db.Article.findOne({ _id: req.params.id }))
+//     // ..and populate all of the notes associated with it
+//     .populate("note")
+//     .then(function(dbArticle) {
+//       // If we were able to successfully find an Article with the given id, send it back to the client
+//       res.json(dbArticle);
+//     })
+//     .catch(function(err) {
+//       // If an error occurred, send it to the client
+//       res.json(err);
+//     });
+// });
 
+//route for saving an article by id
 app.post("/saved/:id", function(req, res) {
-	db.Article.findById(req.params.id, function(err, data) {
-		if (data.issaved) {
-			Article.findByIdAndUpdate(req.params.id, {$set: {issaved: false, status: "Save Article"}}, {new: true}, function(err, data) {
-				res.redirect("/");
-			});
-		}
-		else {
-			Article.findByIdAndUpdate(req.params.id, {$set: {issaved: true, status: "Saved"}}, {new: true}, function(err, data) {
-				res.redirect("/saved");
-			});
-		}
-	});
+	db.Article.update(
+    {
+      _id: req.params.id
+    },
+    {
+      $set: {
+        issaved: true,
+        status: "Saved"
+      }
+    },
+    function (error, edited) {
+      if(error) {
+        console.log("WE HAVE AN ERROR: "+ error);
+        res.send(error);
+      } else {
+        console.log(edited);
+        res.redirect("/saved");
+      }
+    }
+  );
 });
 
 
-app.post("/note/:id", function(req, res) {
-	var note = new Note(req.body);
-	note.save(function(err, doc) {
-		if (err) throw err;
-		db.Article.findByIdAndUpdate(req.params.id, {$set: {"note": doc._id}}, {new: true}, function(err, newdoc) {
-			if (err) throw err;
-			else {
-				res.send(newdoc);
-			}
-		});
-	});
-});
-
-//route to get notes
-app.get("/note/:id", function(req, res) {
-	var id = req.params.id;
-	db.Article.findById(id).populate("note").exec(function(err, data) {
-		res.send(data.note);
-	});
-});
+// app.post("/note/:id", function(req, res) {
+// 	var note = new Note(req.body);
+// 	note.save(function(err, doc) {
+// 		if (err) throw err;
+// 		db.Article.findByIdAndUpdate(req.params.id, {$set: {"note": doc._id}}, {new: true}, function(err, newdoc) {
+// 			if (err) throw err;
+// 			else {
+// 				res.send(newdoc);
+// 			}
+// 		});
+// 	});
+// });
 
 // Start the server
 app.listen(PORT, function () {

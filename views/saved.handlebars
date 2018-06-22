@@ -23,7 +23,7 @@
                 {{#each saved}}
                 <div class="story-body" id={{this._id}}>
                     <div>
-                        <a href="{{this.link}}" target="_blank">{{this.title}}</a>
+                        <h3 class="card-title">{{this.title}}</h3>
                         <form action="/saved/{{this.id}}" method="POST">
 
                             <button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
