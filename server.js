@@ -106,22 +106,6 @@ app.get("/saved", function (req, res) {
     });
 });
 
-// // Route for grabbing a specific Article by id, populate it with it's note
-// app.get("/saved/:id", function(req, res) {
-//   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-//   db.Article.findOne({ _id: req.params.id }))
-//     // ..and populate all of the notes associated with it
-//     .populate("note")
-//     .then(function(dbArticle) {
-//       // If we were able to successfully find an Article with the given id, send it back to the client
-//       res.json(dbArticle);
-//     })
-//     .catch(function(err) {
-//       // If an error occurred, send it to the client
-//       res.json(err);
-//     });
-// });
-
 //route for saving an article by id
 app.post("/saved/:id", function(req, res) {
 	db.Article.update(
@@ -146,19 +130,35 @@ app.post("/saved/:id", function(req, res) {
   );
 });
 
+//route for removing an article from saved list
+app.post("/unsave/:id", function(req, res) {
+	db.Article.update(
+    {
+      _id: req.params.id
+    },
+    {
+      $set: {
+        issaved: false,
+        status: "Save Article"
+      }
+    },
+    function (error, edited) {
+      if(error) {
+        console.log("WE HAVE AN ERROR: "+ error);
+        res.send(error);
+      } else {
+        console.log(edited);
+        res.redirect("/saved");
+      }
+    }
+  );
+});
 
-// app.post("/note/:id", function(req, res) {
-// 	var note = new Note(req.body);
-// 	note.save(function(err, doc) {
-// 		if (err) throw err;
-// 		db.Article.findByIdAndUpdate(req.params.id, {$set: {"note": doc._id}}, {new: true}, function(err, newdoc) {
-// 			if (err) throw err;
-// 			else {
-// 				res.send(newdoc);
-// 			}
-// 		});
-// 	});
-// });
+//route for saving a note
+
+//route for retrieving all notes by id
+
+//route for deleting notes
 
 // Start the server
 app.listen(PORT, function () {

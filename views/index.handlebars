@@ -31,11 +31,11 @@
                     <input id="article-title" type="hidden" name="title" value="{{this.title}}">
                     <input id="article-link" type="hidden" name="link" value={{this.link}}>
                     <button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
-                    {{#unless this.note}}
+                    {{!-- {{#unless this.note}}
                     <button type="button" class="addnote-button" value="{{this._id}}">Add A Note</button>
                     {{/unless}} {{#if this.note}}
                     <button type="button" class="addnote-button" value="{{this._id}}">Edit Note</button>
-                    {{/if}}
+                    {{/if}} --}}
                 </form>
                 {{/each}}
             </div>
