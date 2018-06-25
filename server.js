@@ -155,7 +155,7 @@ app.post("/unsave/:id", function(req, res) {
 });
 
 //route for saving a note
-app.post("/articles/:id", function(req, res) {
+app.post("/saved/note/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
     .then(function(dbNote) {
@@ -175,7 +175,7 @@ app.post("/articles/:id", function(req, res) {
 });
 
 // Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", function(req, res) {
+app.get("/saved/note/:id", function(req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   db.Article.findOne({ _id: req.params.id })
     // ..and populate all of the notes associated with it

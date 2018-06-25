@@ -48,10 +48,10 @@
                 <div class="modal-body">
                     <div id="user-input">
                         <p>Title</p>
-                        <input type="text" id="title" />
+                        <input id='titleinput' name='title' >
                         <br>
                         <p>Note</p>
-                        <textarea id="note"></textarea>
+                        <textarea id='bodyinput' name='body'></textarea>
                     </div>
                     <div id="results">
                         {{#each notes}} {{/each}}
@@ -59,7 +59,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addnote-button">Add Note</button>
+                    <button data-id='" + "{{this._id}}" + "' id='savenote'>Save Note</button>
                 </div>
             </div>
         </div>
