@@ -28,27 +28,31 @@ $(document).on("click", ".delete", function () {
 
 //event for popping up modal and seeing notes
 $(document).on("click", ".seenotes", function () {
-	alert("clicked!");
+	//show modal
 	var modal = document.getElementById('exampleModal');
 	modal.style.display = "block";
-	// var thisId = $(this).attr("value");
-	// $.ajax({
-	// 	method: "GET",
-	// 	url: "/notes/" + thisId
-	// })
-	// .then(function (data) {
-
-	// });
+	var thisId = $(this).attr("value");
+	//ajax to get all articles
+	$.ajax({
+		method: "GET",
+		url: "/notes/" + thisId
+	})
+	.then(function (data) {
+		if (data.note) {
+			// Place the body of the note in the body textarea
+			$(".modal-body").val(data.note.body);
+		  }
+	});
 
 });
 
-//event for removing notes
 
 //event for adding note
 $(document).on("click", ".addnote-button", function () {
 	alert($(this).attr("value"));
 	var thisId = $(this).attr("value");
-	
-
 });
+//event for saving notes
+
+//event for removing notes
 
