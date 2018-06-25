@@ -59,6 +59,7 @@ app.get("/scrape", function (req, res) {
           // View the added result in the console
           console.log(dbArticle);
           console.log(result);
+          res.redirect("/");
         })
         .catch(function (err) {
           // If an error occurred, send it to the client
@@ -67,8 +68,6 @@ app.get("/scrape", function (req, res) {
         });
     });
 
-    // If we were able to successfully scrape and save an Article, send a message to the client
-    res.send("Scrape Complete");
     res.redirect("/");
   });
 });
@@ -154,8 +153,29 @@ app.post("/unsave/:id", function(req, res) {
   );
 });
 
-//route for saving a note
-app.post("/saved/note/:id", function(req, res) {
+// Route for grabbing a specific Article by id, populate it with it's note
+app.get("/articles/:id", function(req, res) {
+  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  db.Article.findOne({ _id: req.params.id })
+    // ..and populate all of the notes associated with it
+    .populate("note")
+    .then(function(dbNotes) {
+      // If we were able to successfully find an Article with the given id, send it back to the client
+      res.json(dbNotes);
+      var hbsObjectThree = {
+        notes: dbNotes
+      };
+      // If we were able to successfully find Articles, send them back to the client
+      res.render("/articles/:id", hbsObjectThree);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route for saving/updating an Article's associated Note
+app.post("/articles/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
     .then(function(dbNote) {
@@ -166,22 +186,6 @@ app.post("/saved/note/:id", function(req, res) {
     })
     .then(function(dbArticle) {
       // If we were able to successfully update an Article, send it back to the client
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    });
-});
-
-// Route for grabbing a specific Article by id, populate it with it's note
-app.get("/saved/note/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  db.Article.findOne({ _id: req.params.id })
-    // ..and populate all of the notes associated with it
-    .populate("note")
-    .then(function(dbArticle) {
-      // If we were able to successfully find an Article with the given id, send it back to the client
       res.json(dbArticle);
     })
     .catch(function(err) {
