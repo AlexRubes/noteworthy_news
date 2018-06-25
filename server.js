@@ -156,6 +156,7 @@ app.post("/unsave/:id", function(req, res) {
 
 //route for saving a note
 
+
 //route for retrieving all notes by article id
 app.get("/notes/:id", function(req, res) {
 
@@ -181,28 +182,27 @@ app.get("/notes/:id", function(req, res) {
 });
 
 //route for deleting notes
-// Delete One from the DB
-app.get("/delete/:id", function(req, res) {
-  // Remove a note using the objectID
-  db.Note.remove(
-    {
-      _id: req.params.id
-    },
-    function(error, removed) {
-      // Log any errors from mongojs
-      if (error) {
-        console.log(error);
-        res.send(error);
-      }
-      else {
-        // Otherwise, send the mongojs response to the browser
-        // This will fire off the success function of the ajax request
-        console.log(removed);
-        res.send(removed);
-      }
-    }
-  );
-});
+// app.get("/delete/:id", function(req, res) {
+//   // Remove a note using the objectID
+//   db.Note.remove(
+//     {
+//       _id: req.params.id
+//     },
+//     function(error, removed) {
+//       // Log any errors from mongojs
+//       if (error) {
+//         console.log(error);
+//         res.send(error);
+//       }
+//       else {
+//         // Otherwise, send the mongojs response to the browser
+//         // This will fire off the success function of the ajax request
+//         console.log(removed);
+//         res.send(removed);
+//       }
+//     }
+//   );
+// });
 
 // Start the server
 app.listen(PORT, function () {

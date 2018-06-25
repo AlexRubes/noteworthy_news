@@ -24,8 +24,7 @@
                 <div class="story-body" id={{this._id}}>
                     <div>
                         <h3 class="card-title">{{this.title}}</h3>
-                        <form action="/saved/{{this.id}}" method="POST">
-
+                        <form action="/unsave/{{this.id}}" method="POST">
                             <button type="submit" class="delete" value="{{this._id}}">Delete From Saved</button>
                             <button type="button" class="seenotes" value="{{this._id}}" data-toggle="modal" data-target="#exampleModal">Article Notes</button>
                         </form>
@@ -47,7 +46,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <div id="user-input">
+                        <p>Title</p>
+                        <input type="text" id="title" />
+                        <br>
+                        <p>Note</p>
+                        <textarea id="note"></textarea>
+                    </div>
+                    <div id="results">
+                        {{#each notes}} {{/each}}
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -1,6 +1,6 @@
 //event for saving article
 $(document).on("click", ".status", function () {
-	alert($(this).attr("value"));
+	
 	var thisId = $(this).attr("value");
 	// Run a POST request to change the status of the article
 	$.ajax({
@@ -14,7 +14,7 @@ $(document).on("click", ".status", function () {
 
 //event for unsaving article 
 $(document).on("click", ".delete", function () {
-	alert($(this).attr("value"));
+	
 	var thisId = $(this).attr("value");
 	// Run a POST request to change the status of the article
 	$.ajax({
@@ -40,10 +40,9 @@ $(document).on("click", ".seenotes", function () {
 	.then(function (data) {
 		if (data.note) {
 			// Place the body of the note in the body textarea
-			$(".modal-body").val(data.note.body);
+			$("#results").val(data.note.body);
 		  }
 	});
-
 });
 
 
