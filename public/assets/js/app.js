@@ -35,7 +35,7 @@ $(document).on("click", ".seenotes", function () {
 	//ajax to get all articles
 	$.ajax({
 		method: "GET",
-		url: "/saved/note/" + thisId
+		url: "/saved/notes/" + thisId
 	})
 	.then(function (data) {
       // If there's a note in the article
@@ -51,12 +51,13 @@ $(document).on("click", ".seenotes", function () {
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
 	// Grab the id associated with the article from the submit button
-	var thisId = $(this).attr("data-id");
-  
+	var thisArtId = $(this).data("id");
+	$(".modal-body #titleinput").val(thisArtId);
+	$(".modal-body #bodyinput").val(thisArtId);
 	// Run a POST request to change the note, using what's entered in the inputs
 	$.ajax({
 	  method: "POST",
-	  url: "/saved/note/" + thisId,
+	  url: "/saved/notes/" + thisArtId,
 	  data: {
 		// Value taken from title input
 		title: $("#titleinput").val(),
@@ -70,7 +71,7 @@ $(document).on("click", "#savenote", function() {
 		console.log(data);
 		// Empty the notes section
 		$("#results").empty();
-		$("#exampleModal").hide();
+		
 	  });
   
 	// Also, remove the values entered in the input and textarea for note entry
