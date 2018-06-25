@@ -38,20 +38,25 @@ $(document).on("click", ".seenotes", function () {
 		url: "/notes/" + thisId
 	})
 	.then(function (data) {
-		if (data.note) {
-			// Place the body of the note in the body textarea
-			$("#results").val(data.note.body);
-		  }
+      // If there's a note in the article
+      if (data.note) {
+        // Place the title of the note in the title input
+        $(".title").val(data.note.title);
+        // Place the body of the note in the body textarea
+        $(".note").val(data.note.body);
+      }
 	});
 });
-
 
 //event for adding note
 $(document).on("click", ".addnote-button", function () {
 	alert($(this).attr("value"));
 	var thisId = $(this).attr("value");
 });
-//event for saving notes
 
-//event for removing notes
+//event for closing modal
+$(document).on("click", "#close", function () {
+	$("#exampleModal").hide();
+	
+});
 
