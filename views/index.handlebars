@@ -17,28 +17,24 @@
     <div class="jumbotron">
         <h1 class="header">NOTEworthy News</h1>
     </div>
-    <div class="card-group" id="articles-js">
+    <div class="container">
+        {{#each articles}}
         <div class="card">
-            <div class="card-body">
-                {{#each articles}}
-                <h3 class="card-title">
-                    {{this.title}}
-                </h3>
-                <div class="card-text">
-                    {{this.link}}
+
+            <h3 class="card-header">{{this.title}}</h3>
+            <div class="row">
+                <div class="col-lg-8 card-block">
+                    <a href="{{this.link}}" target="_blank" class="card-link">Read more</a>
                 </div>
-                <form action="/saved/{{this.id}}" method="POST">
-                    <input id="article-title" type="hidden" name="title" value="{{this.title}}">
-                    <input id="article-link" type="hidden" name="link" value={{this.link}}>
-                    <button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
-                    {{!-- {{#unless this.note}}
-                    <button type="button" class="addnote-button" value="{{this._id}}">Add A Note</button>
-                    {{/unless}} {{#if this.note}}
-                    <button type="button" class="addnote-button" value="{{this._id}}">Edit Note</button>
-                    {{/if}} --}}
-                </form>
-                {{/each}}
+                <div class="col-lg-4 align-self-end text-right">
+                    <form action="/saved/{{this.id}}" method="POST">
+                        <input id="article-title" type="hidden" name="title" value="{{this.title}}">
+                        <input id="article-link" type="hidden" name="link" value={{this.link}}>
+                        <button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
+                    </form>
+                </div>
             </div>
         </div>
+        {{/each}}
     </div>
 </div>

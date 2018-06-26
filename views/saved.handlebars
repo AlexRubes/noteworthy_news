@@ -17,53 +17,32 @@
     <div class="jumbotron">
         <h1 class="header">NOTEworthy News</h1>
     </div>
-    <div class="card-group" id="articles-js">
+    <div class="container">
+        {{#each saved}}
         <div class="card">
-            <div class="card-body">
-                {{#each saved}}
-                <div class="story-body" id={{this._id}}>
-                    <div>
-                        <h3 class="card-title">{{this.title}}</h3>
-                        <form action="/unsave/{{this.id}}" method="POST">
-                            <button type="submit" class="delete" value="{{this._id}}">Delete From Saved</button>
-                            <button type="button" class="seenotes" data-id="{{this._id}}" value="{{this._id}}" data-toggle="modal" data-target="#exampleModal">Article Notes</button>
-                        </form>
-                    </div>
+
+            <h3 class="card-header">{{this.title}}</h3>
+            <div class="row">
+                <div class="col-lg-8 card-block">
+                    <a href="{{this.link}}" target="_blank" class="card-link">Read more</a>
                 </div>
-                {{/each}}
+                <div class="col-lg-4 align-self-end text-right">
+                    <form action="/unsave/{{this.id}}" method="POST">
+                        <button type="submit" class="delete" value="{{this._id}}">Delete From Saved</button>
+                        <button type="button" class="seenotes" data-toggle="modal" data-target="#exampleModal" data-id="{{this._id}}">View Notes</button>
+                    </form>
+                </div>
             </div>
         </div>
+        {{/each}}
     </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-id="{{this.id}}">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Article Notes</h5>
-                    <button type="button" id="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="user-input" value="" >
-                        <p>Title</p>
-                        <input id='titleinput' name='title' value="" >
-                        <br>
-                        <p>Note</p>
-                        <input id='bodyinput' name='body' value="">
-                    </div>
-                    <div id="results">
-                        {{#each notes}} 
-                        <h3 class="card-title">{{this.title}}</h3>
-                        {{/each}}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">Close</button>
-                    <button value="{{this._id}}" id='savenote'>Save Note</button>
-                </div>
-            </div>
+<!-- Modal -->
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
+            <div class="modal-content"></div>
         </div>
     </div>
 </div>
