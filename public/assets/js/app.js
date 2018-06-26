@@ -56,7 +56,7 @@ $(document).on("click", ".seenotes", function () {
 				</div>`
 			);
 			let notes = data.note;
-			console.log(notes);
+			console.log(data.note);
 			for ( var i = 0; i < notes.length; i++) { 
 			$('.list-group').append(`<li class="list-group-item justify-content-between">${note.body}</li>`);
 			};
@@ -69,7 +69,7 @@ $(document).on("click", ".savenote", function () {
 	// Grab the id associated with the article from the submit button
 
 	let thisId = $(this).data('id');
-	let content = $('.note-content').val().trim();
+	let content = $('.note-content').val()
 	// Run a POST request to change the note, using what's entered in the inputs
 	if (content) {
 		$.ajax({
@@ -77,8 +77,8 @@ $(document).on("click", ".savenote", function () {
 			url: "/saved/notes/" + thisId,
 			data: {
 				// Value taken from note textarea
-				body: $("#bodyinput").val()
-			}
+				body: $('.note-content').val()
+			  }
 		})
 			// With that done
 			.then(function (data) {
